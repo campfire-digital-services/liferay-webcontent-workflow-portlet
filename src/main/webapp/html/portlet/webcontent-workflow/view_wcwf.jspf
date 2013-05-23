@@ -1,0 +1,140 @@
+<%--
+Copyright (C) 2013 Permeance Technologies
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
+--%>
+<%@page import="java.util.Locale"%>
+<%@page import="com.liferay.portal.kernel.util.GetterUtil"%>
+<%@page import="com.liferay.portal.kernel.util.StringPool"%>
+<%@page import="com.liferay.portal.kernel.language.LanguageUtil"%>
+<%@page import="com.liferay.portal.NoSuchWorkflowDefinitionLinkException"%>
+<%@page import="com.liferay.portlet.journal.model.JournalArticle"%>
+<%@page import="com.liferay.portal.service.WorkflowDefinitionLinkLocalServiceUtil"%>
+<%@page import="com.liferay.portal.model.WorkflowDefinitionLink"%>
+<%@page import="com.liferay.portal.kernel.util.ListUtil"%>
+<%@page import="com.liferay.portlet.PortletURLUtil"%>
+<%@page import="javax.portlet.PortletURL"%>
+<%@page import="com.liferay.portlet.journal.model.JournalStructure"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.liferay.portlet.journal.service.JournalStructureServiceUtil"%>
+<%@page import="com.liferay.portal.theme.ThemeDisplay"%>
+<%@page import="com.liferay.portal.kernel.util.WebKeys"%>
+<%@page import="com.liferay.portal.kernel.workflow.comparator.WorkflowComparatorFactoryUtil"%>
+<%@page import="com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil"%>
+<%@page import="com.liferay.portal.kernel.workflow.WorkflowDefinition"%>
+<%@page import="java.util.List"%>
+
+<liferay-ui:success key="success"
+	message="ui-request-processed-successfully" />
+<liferay-ui:error key="error"
+	message="ui-request-processed-error" />
+	
+<%
+ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+Locale locale = themeDisplay.getLocale();
+long companyId = themeDisplay.getCompanyId();
+long groupId = themeDisplay.getScopeGroupIdOrLiveGroupId();
+
+List<WorkflowDefinition> workflowDefinitions = WorkflowDefinitionManagerUtil.getActiveWorkflowDefinitions(companyId, 0, 100, WorkflowComparatorFactoryUtil.getDefinitionNameComparator(true));
+
+List<JournalStructure> structures = new ArrayList<JournalStructure>();
+structures.add(null); //basic web content
+structures.addAll(JournalStructureServiceUtil.getStructures(themeDisplay.getScopeGroupId()));
+if (themeDisplay.getCompanyGroupId() != themeDisplay.getScopeGroupId()) {
+	structures.addAll(JournalStructureServiceUtil.getStructures(themeDisplay.getCompanyGroupId()));
+}
+
+%>
+
+
+<portlet:actionURL var="editWebContentWorkflowConfigurationURL">
+</portlet:actionURL>
+
+<aui:form action="<%= editWebContentWorkflowConfigurationURL %>" method="post">
+	<aui:input name="groupId" type="hidden" value="<%= groupId %>" />
+
+	<table>
+
+<%
+	for(JournalStructure structure: structures) {
+	    long structureId = 0;
+	    if(structure != null) structureId = GetterUtil.getLong(structure.getStructureId(), 0l);
+%>	
+		<tr>
+<%
+		if(structure == null) {
+%>
+			<td><%=LanguageUtil.get(pageContext, "basic-web-content") %>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<%
+		} else {
+%>
+			<td><c:out value="<%=structure.getNameCurrentValue() %>"/> 
+			<%
+				if(structure.getGroupId() != groupId) {
+			%> (Global)<% } %>&nbsp;&nbsp;&nbsp;&nbsp;	
+			</td>
+<%
+		}
+%>
+			<td>
+				<aui:select label="" name='<%= "workflowDefinitionName@" + structureId %>'>
+
+					<%
+					WorkflowDefinitionLink workflowDefinitionLink = null;
+
+					try {
+						workflowDefinitionLink = WorkflowDefinitionLinkLocalServiceUtil.getWorkflowDefinitionLink(companyId, groupId, JournalArticle.class.getName(), structureId, 0, true);
+					}
+					catch (NoSuchWorkflowDefinitionLinkException nswdle) {
+					}
+
+					String defaultOptionMessage = null;
+
+					try {
+						WorkflowDefinitionLink defaultWorkflowDefinitionLink = WorkflowDefinitionLinkLocalServiceUtil.getDefaultWorkflowDefinitionLink(companyId, JournalArticle.class.getName(), structureId, 0);
+						defaultOptionMessage = LanguageUtil.get(pageContext, "default") + StringPool.COLON + StringPool.SPACE + defaultWorkflowDefinitionLink.getWorkflowDefinitionName();
+					}
+					catch (NoSuchWorkflowDefinitionLinkException nswdle) {
+						defaultOptionMessage = LanguageUtil.get(pageContext, "default") + StringPool.COLON + StringPool.SPACE + LanguageUtil.get(pageContext, "no-workflow");
+					}
+					%>
+
+					<aui:option><%= defaultOptionMessage %></aui:option>
+
+					<%
+					for (WorkflowDefinition workflowDefinition : workflowDefinitions) {
+						boolean selected = false;
+
+						if ((workflowDefinitionLink != null) && (workflowDefinitionLink.getWorkflowDefinitionName().equals(workflowDefinition.getName())) && (workflowDefinitionLink.getWorkflowDefinitionVersion() == workflowDefinition.getVersion())) {
+							selected = true;
+						}
+					%>
+
+						<aui:option label='<%= workflowDefinition.getName() + " (" + LanguageUtil.format(locale, "version-x", workflowDefinition.getVersion()) + ")" %>' selected="<%= selected %>" value="<%= workflowDefinition.getName() + StringPool.AT + workflowDefinition.getVersion() %>" />
+
+					<%
+					}
+					%>
+
+				</aui:select>			
+			
+			</td>		
+		</tr>
+<%
+	}
+%>	
+	</table>
+
+	<aui:button-row>
+		<aui:button type="submit" />
+	</aui:button-row>
+</aui:form>
