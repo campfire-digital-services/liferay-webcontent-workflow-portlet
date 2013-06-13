@@ -18,7 +18,7 @@ not, see <http://www.gnu.org/licenses/>.
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>webcontent-workflow-portlet</portlet-name>
-		<icon>/html/icons/workflow_definition_links.png</icon>
+		<icon>/html/icons/webcontent-workflow-small.png</icon>
 		<control-panel-entry-category>content</control-panel-entry-category>
 		<control-panel-entry-weight>25.1</control-panel-entry-weight>
 		<control-panel-entry-class>au.com.permeance.liferay.portlets.workflow.WorkflowControlPanelEntry</control-panel-entry-class>
