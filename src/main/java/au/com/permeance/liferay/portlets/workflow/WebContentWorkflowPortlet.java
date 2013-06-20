@@ -43,7 +43,7 @@ import javax.portlet.RenderResponse;
  * @author Chun Ho <chun.ho@permeance.com.au>
  */
 public class WebContentWorkflowPortlet extends MVCPortlet {
-    private static final Log log = LogFactoryUtil.getLog(WebContentWorkflowPortlet.class);
+    private static final Log _log = LogFactoryUtil.getLog(WebContentWorkflowPortlet.class);
     private static final String VIEW_PAGE = "/html/portlet/webcontent-workflow/view.jsp";
     private static final String ERROR_PAGE = "/html/portlet/webcontent-workflow/error.jsp";
     private static final String _PREFIX = "workflowDefinitionName@";
@@ -53,7 +53,7 @@ public class WebContentWorkflowPortlet extends MVCPortlet {
         try {
             include(VIEW_PAGE, renderRequest, renderResponse);
         } catch (final Exception e) {
-            log.warn(e);
+            _log.warn("Error processing view: " + e.getMessage(), e);
             include(ERROR_PAGE, renderRequest, renderResponse);
         }
     }
@@ -79,11 +79,11 @@ public class WebContentWorkflowPortlet extends MVCPortlet {
                     WorkflowDefinitionLinkLocalServiceUtil.updateWorkflowDefinitionLink(themeDisplay.getUserId(),
                             themeDisplay.getCompanyId(), groupId, JournalArticle.class.getName(), structureId, 0, workflowDefinition);
                 } catch (SystemException e) {
-                    log.warn(e);
+                    _log.warn("Error processing action: " + e.getMessage(), e);
                     SessionErrors.add(actionRequest, e.toString());
                     success = false;
                 } catch (PortalException e) {
-                    log.warn(e);
+                    _log.warn("Error processing action: " + e.getMessage(), e);
                     SessionErrors.add(actionRequest, e.toString());
                     success = false;
                 }

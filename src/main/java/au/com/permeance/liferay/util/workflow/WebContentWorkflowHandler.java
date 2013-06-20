@@ -73,13 +73,13 @@ public class WebContentWorkflowHandler extends BaseWorkflowHandler {
 
             return JournalArticleLocalServiceUtil.updateStatus(userId, article, status, articleURL, serviceContext);
         } catch (RuntimeException e) {
-            _log.error(e);
+            _log.error("Error updating status: " + e.getMessage(), e);
             throw e;
         } catch (PortalException e) {
-            _log.error(e);
+            _log.error("Error updating status: " + e.getMessage(), e);
             throw e;
         } catch (SystemException e) {
-            _log.error(e);
+            _log.error("Error updating status: " + e.getMessage(), e);
             throw e;
         }
     }
