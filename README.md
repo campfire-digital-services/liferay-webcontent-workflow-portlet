@@ -13,7 +13,10 @@ This portlet to allow assignment of different Liferay workflows to individual We
 
 ## Downloads
 
-[Liferay Marketplace](http://www.liferay.com/marketplace/ "Liferay Marketplace") submission is pending.
+The latest releases are available from [SourceForge](http://sourceforge.net/projects/permeance-apps/files/liferay-web-content-workflow-configuration/ "Liferay Web Content Workflow Configuration Portlet").
+
+It is also available from the [Liferay Marketplace](http://www.liferay.com/marketplace/-/mp/application/25619448 "Liferay Web Content Workflow Configuration Portlet").
+
 
 ## Usage
 
