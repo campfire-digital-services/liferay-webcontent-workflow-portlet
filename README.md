@@ -7,8 +7,8 @@ This portlet to allow assignment of different Liferay workflows to individual We
 
 ## Supported Products
 
-* Liferay Portal 6.1 CE GA2 (6.1.1+)
-* Liferay Portal 6.1 EE GA2 (6.1.20+)
+* Liferay Portal 6.1 CE GA2, GA3 (6.1.1+)
+* Liferay Portal 6.1 EE GA2, GA3 (6.1.20+)
 
 
 ## Downloads
@@ -55,7 +55,7 @@ NOTE: You will require JDK 1.6+ and Maven 3.
 
 eg.
 
-Deploy "liferay-webcontent-workflow-portlet-1.0.0.0.war" to "$LIFERAY_HOME/deploy" folder.
+Deploy "liferay-webcontent-workflow-portlet-1.0.0.1.war" to "$LIFERAY_HOME/deploy" folder.
 
 ## License
 
