@@ -55,7 +55,7 @@ NOTE: You will require JDK 1.6+ and Maven 3.
 
 eg.
 
-Deploy "liferay-webcontent-workflow-portlet-1.0.0.1.war" to "$LIFERAY_HOME/deploy" folder.
+Deploy "liferay-webcontent-workflow-portlet-1.0.1.1.war" to "$LIFERAY_HOME/deploy" folder.
 
 ## License
 
