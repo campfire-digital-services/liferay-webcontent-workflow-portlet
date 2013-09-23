@@ -14,6 +14,7 @@
  */
 package au.com.permeance.liferay.util.workflow;
 
+import com.liferay.portal.NoSuchWorkflowDefinitionLinkException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -96,11 +97,27 @@ public class WebContentWorkflowHandler extends BaseWorkflowHandler {
     public WorkflowDefinitionLink getWorkflowDefinitionLink(long companyId, long groupId, long classPK) throws PortalException,
             SystemException {
 
-        JournalArticle model = JournalArticleLocalServiceUtil.getArticle(classPK);
+        // fix for 6.1.30:
+        // in 6.1.20 - function can throw NoSuchWorkflowDefinitionLinkException which is caught in
+        // caller
+        // in 6.1.30 - function cannot throw NoSuchWorkflowDefinitionLinkException - as it will
+        // break flow (uncaught in caller).
+        try {
+            JournalArticle model = JournalArticleLocalServiceUtil.getArticle(classPK);
 
-        long structureId = GetterUtil.getLong(model.getStructureId(), 0);
+            long structureId = GetterUtil.getLong(model.getStructureId(), 0);
 
-        return WorkflowDefinitionLinkLocalServiceUtil.getWorkflowDefinitionLink(companyId, groupId, getClassName(), structureId, 0);
+            WorkflowDefinitionLink link = WorkflowDefinitionLinkLocalServiceUtil.getWorkflowDefinitionLink(companyId, groupId,
+                    getClassName(), structureId, 0);
+
+            return link;
+        } catch (NoSuchWorkflowDefinitionLinkException e) {
+            if (_log.isDebugEnabled()) {
+                _log.debug("Caught NoSuchWorkflowDefinitionLinkException, returning null");
+                _log.debug(e);
+            }
+            return null;
+        }
     }
 
     @Override
