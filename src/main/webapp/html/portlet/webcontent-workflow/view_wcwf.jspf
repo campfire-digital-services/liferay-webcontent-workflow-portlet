@@ -68,6 +68,21 @@ if (themeDisplay.getCompanyGroupId() != themeDisplay.getScopeGroupId()) {
 	for(JournalStructure structure: structures) {
 	    long structureId = 0;
 	    if(structure != null) structureId = GetterUtil.getLong(structure.getStructureId(), 0l);
+	    
+	    if(structure != null && structureId == 0) {
+%>	
+		<tr>
+			<td><c:out value="<%=structure.getNameCurrentValue() %>"/> 
+			<%
+				if(structure.getGroupId() != groupId) {
+			%> (Global)<% } %>&nbsp;&nbsp;&nbsp;&nbsp;	
+			</td>
+			<td>
+			Uses the workflow assigned to "<%=LanguageUtil.get(pageContext, "basic-web-content") %>"
+			</td>			
+		</tr>	        
+<%
+	    } else {
 %>	
 		<tr>
 <%
@@ -130,6 +145,7 @@ if (themeDisplay.getCompanyGroupId() != themeDisplay.getScopeGroupId()) {
 			</td>		
 		</tr>
 <%
+	    }
 	}
 %>	
 	</table>
