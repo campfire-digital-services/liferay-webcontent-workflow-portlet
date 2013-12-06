@@ -72,12 +72,12 @@ if (themeDisplay.getCompanyGroupId() != themeDisplay.getScopeGroupId()) {
 	    if(structure != null && structureId == 0) {
 %>	
 		<tr>
-			<td><c:out value="<%=structure.getNameCurrentValue() %>"/> 
+			<td valign="middle"><c:out value="<%=structure.getName(locale, true) %>"/> 
 			<%
 				if(structure.getGroupId() != groupId) {
 			%> (Global)<% } %>&nbsp;&nbsp;&nbsp;&nbsp;	
 			</td>
-			<td>
+			<td valign="middle">
 			Uses the workflow assigned to "<%=LanguageUtil.get(pageContext, "basic-web-content") %>"
 			</td>			
 		</tr>	        
@@ -88,11 +88,11 @@ if (themeDisplay.getCompanyGroupId() != themeDisplay.getScopeGroupId()) {
 <%
 		if(structure == null) {
 %>
-			<td><%=LanguageUtil.get(pageContext, "basic-web-content") %>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td valign="middle"><%=LanguageUtil.get(pageContext, "basic-web-content") %>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <%
 		} else {
 %>
-			<td><c:out value="<%=structure.getNameCurrentValue() %>"/> 
+			<td valign="middle"><c:out value="<%=structure.getName(locale, true) %>"/> 
 			<%
 				if(structure.getGroupId() != groupId) {
 			%> (Global)<% } %>&nbsp;&nbsp;&nbsp;&nbsp;	
@@ -100,7 +100,7 @@ if (themeDisplay.getCompanyGroupId() != themeDisplay.getScopeGroupId()) {
 <%
 		}
 %>
-			<td>
+			<td valign="middle">
 				<aui:select label="" name='<%= "workflowDefinitionName@" + structureId %>'>
 
 					<%

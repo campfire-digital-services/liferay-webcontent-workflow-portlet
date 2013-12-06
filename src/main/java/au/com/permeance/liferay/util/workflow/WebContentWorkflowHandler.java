@@ -72,7 +72,8 @@ public class WebContentWorkflowHandler extends BaseWorkflowHandler {
 
             String articleURL = PortalUtil.getControlPanelFullURL(serviceContext.getScopeGroupId(), PortletKeys.JOURNAL, null);
 
-            return JournalArticleLocalServiceUtil.updateStatus(userId, article, status, articleURL, serviceContext);
+            return JournalArticleLocalServiceUtil.updateStatus(userId, article, status, articleURL, workflowContext, serviceContext);
+
         } catch (RuntimeException e) {
             _log.error("Error updating status: " + e.getMessage(), e);
             throw e;

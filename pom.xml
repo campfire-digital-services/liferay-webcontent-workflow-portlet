@@ -7,11 +7,11 @@
 
 	<groupId>au.com.permeance</groupId>
 	<artifactId>webcontent-workflow-portlet</artifactId>
-	<version>1.0.1.1</version>
+	<version>1.0.2.1-6.2.x</version>
 	<packaging>war</packaging>
 
 	<properties>
-		<liferay.version>6.1.1</liferay.version>
+		<liferay.version>6.2.0-GA1</liferay.version>
 	</properties>
 
 	<dependencies>
