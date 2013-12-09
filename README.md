@@ -9,7 +9,12 @@ This portlet to allow assignment of different Liferay workflows to individual We
 
 * Liferay Portal 6.1 CE GA2, GA3 (6.1.1+)
 * Liferay Portal 6.1 EE GA2, GA3 (6.1.20+)
+* Liferay Portal 6.2 CE GA1 (6.2.0+)
+* Liferay Portal 6.2 EE GA1 (6.2.10+)
 
+Branch 6.1.x holds plugin code for Liferay Portal 6.1 versions.
+Branch 6.2.x holds plugin code for Liferay Portal 6.2 versions.
+Master is sync'ed with branch 6.2.x
 
 ## Downloads
 
