@@ -31,13 +31,17 @@ When viewing the Workflow Configuration for a specific community/site, you will 
 
 ![Workflow Configuration](/doc/images/wcwfp3.PNG "Workflow Configuration")
 
-You will also find a new portlet "Web Content Workflow Configuration" below Workflow Configuration in the Content section of the Control Panel.
+You will also find a new portlet "Web Content Workflow Configuration" below Workflow Configuration in the Content section of the Control Panel in 6.1.
 
 ![Control Panel](/doc/images/wcwfp1.PNG "Control Panel")
 
+Or in the Content section of Site Administration area in Control Panel in 6.2.
+
+![Web Content Workflow Configuration](/doc/images/wcwf-6.2-1.PNG "Web Content Workflow Configuration")
+
 This portlet allows the administrator to select specific Workflows for each structure type available to the site (either in the site itself or in the global scope).
 
-![Web Content Workflow Configuration](/doc/images/wcwfp2.PNG "Web Content Workflow Configuration")
+![Web Content Workflow Configuration](/doc/images/wcwf-6.1-1.PNG "Web Content Workflow Configuration")
 
 ## Building
 
@@ -60,7 +64,7 @@ NOTE: You will require JDK 1.6+ and Maven 3.
 
 eg.
 
-Deploy "liferay-webcontent-workflow-portlet-1.0.1.1.war" to "$LIFERAY_HOME/deploy" folder.
+Deploy "liferay-webcontent-workflow-portlet-LPX.X-X.X.X.X.war" to "$LIFERAY_HOME/deploy" folder.
 
 ## License
 
