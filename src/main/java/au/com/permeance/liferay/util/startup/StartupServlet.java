@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServlet;
  * StartupServlet
  * 
  * In testing, we are experiencing in some cases if the plugin security manager has been enabled,
- * the LogViewerListener would not fire (plausibly due to timing between when the deploy event is
- * set and when SecurePluginContextListener registers it). This happens on both CE and EE.
+ * the context listener would not fire (plausibly due to timing between when the deploy event is set
+ * and when SecurePluginContextListener registers it). This happens on both CE and EE.
  * 
  * This startup servlet is a workaround for this.
  * 
