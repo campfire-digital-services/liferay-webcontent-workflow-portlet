@@ -37,11 +37,11 @@ You will also find a new portlet "Web Content Workflow Configuration" below Work
 
 Or in the Content section of Site Administration area in Control Panel in 6.2.
 
-![Web Content Workflow Configuration](/doc/images/wcwf-6.2-1.PNG "Web Content Workflow Configuration")
+![Web Content Workflow Configuration](/doc/images/wcwf-6.2-1.png "Web Content Workflow Configuration")
 
 This portlet allows the administrator to select specific Workflows for each structure type available to the site (either in the site itself or in the global scope).
 
-![Web Content Workflow Configuration](/doc/images/wcwf-6.1-1.PNG "Web Content Workflow Configuration")
+![Web Content Workflow Configuration](/doc/images/wcwf-6.1-1.png "Web Content Workflow Configuration")
 
 ## Building
 
