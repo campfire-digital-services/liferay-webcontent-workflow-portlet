@@ -17,8 +17,10 @@ package au.com.permeance.liferay.portlets.workflow;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portlet.journal.model.JournalStructure;
-import com.liferay.portlet.journal.service.JournalStructureServiceUtil;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
+import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalServiceUtil;
+import com.liferay.portlet.journal.model.JournalArticle;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,22 +37,22 @@ public class JournalStructureBrowseEntry implements Serializable {
     private static final Log _log = LogFactoryUtil.getLog(JournalStructureBrowseEntry.class);
 
     private static final String DEFAULT_ID = "0";
-    private JournalStructure structure = null;
+    private DDMStructure structure = null;
 
     public JournalStructureBrowseEntry() {
     }
 
-    public JournalStructureBrowseEntry(JournalStructure structure) {
+    public JournalStructureBrowseEntry(DDMStructure structure) {
         this.structure = structure;
     }
 
-    public JournalStructure getStructure() {
+    public DDMStructure getStructure() {
         return structure;
     }
 
     public String getId() {
         if (structure != null) {
-            return Long.toString(structure.getGroupId()) + StringPool.UNDERLINE + structure.getStructureId();
+            return Long.toString(structure.getGroupId()) + StringPool.UNDERLINE + structure.getStructureKey();
         }
         return DEFAULT_ID;
     }
@@ -62,8 +64,10 @@ public class JournalStructureBrowseEntry implements Serializable {
     public static List<JournalStructureBrowseEntry> getEntriesForGroup(long groupId) {
         List<JournalStructureBrowseEntry> toReturn = new ArrayList<JournalStructureBrowseEntry>();
         try {
-            List<JournalStructure> structures = JournalStructureServiceUtil.getStructures(groupId);
-            for (JournalStructure structure : structures) {
+            long classNameId = ClassNameLocalServiceUtil.getClassNameId(JournalArticle.class.getName());
+            List<DDMStructure> structures = DDMStructureLocalServiceUtil.getStructures(groupId, classNameId);
+
+            for (DDMStructure structure : structures) {
                 toReturn.add(new JournalStructureBrowseEntry(structure));
             }
         } catch (Exception e) {
