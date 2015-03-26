@@ -29,8 +29,13 @@ import com.liferay.portal.service.WorkflowDefinitionLinkLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
+import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
+import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.model.JournalArticleConstants;
+import com.liferay.portlet.journal.model.JournalFolder;
 import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
+import com.liferay.portlet.journal.service.JournalFolderLocalServiceUtil;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -42,7 +47,7 @@ import java.util.Map;
  * 
  * @author Chun Ho <chun.ho@permeance.com.au>
  */
-public class WebContentWorkflowHandler extends BaseWorkflowHandler {
+public class WebContentWorkflowHandler extends BaseWorkflowHandler<JournalArticle> {
 
     private static final Log _log = LogFactoryUtil.getLog(WebContentWorkflowHandler.class);
 
@@ -61,7 +66,8 @@ public class WebContentWorkflowHandler extends BaseWorkflowHandler {
      * This implementation puts out a stack trace for any exception because Liferay can swallow them
      * and this is where potential PACL-related exceptions can occur.
      */
-    public JournalArticle updateStatus(int status, Map<String, Serializable> workflowContext) throws PortalException, SystemException {
+    @Override
+    public JournalArticle updateStatus(int status, Map<String, Serializable> workflowContext) throws PortalException {
         try {
             long userId = GetterUtil.getLong((String) workflowContext.get(WorkflowConstants.CONTEXT_USER_ID));
             long classPK = GetterUtil.getLong((String) workflowContext.get(WorkflowConstants.CONTEXT_ENTRY_CLASS_PK));
@@ -72,15 +78,12 @@ public class WebContentWorkflowHandler extends BaseWorkflowHandler {
 
             String articleURL = PortalUtil.getControlPanelFullURL(serviceContext.getScopeGroupId(), PortletKeys.JOURNAL, null);
 
-            return JournalArticleLocalServiceUtil.updateStatus(userId, article, status, articleURL, workflowContext, serviceContext);
+            return JournalArticleLocalServiceUtil.updateStatus(userId, article, status, articleURL, serviceContext, workflowContext);
 
         } catch (RuntimeException e) {
             _log.error("Error updating status: " + e.getMessage(), e);
             throw e;
         } catch (PortalException e) {
-            _log.error("Error updating status: " + e.getMessage(), e);
-            throw e;
-        } catch (SystemException e) {
             _log.error("Error updating status: " + e.getMessage(), e);
             throw e;
         }
@@ -104,13 +107,32 @@ public class WebContentWorkflowHandler extends BaseWorkflowHandler {
         // in 6.1.30 - function cannot throw NoSuchWorkflowDefinitionLinkException - as it will
         // break flow (uncaught in caller).
         try {
-            JournalArticle model = JournalArticleLocalServiceUtil.getArticle(classPK);
+            JournalArticle article = JournalArticleLocalServiceUtil.getArticle(classPK);
 
-            long structureId = GetterUtil.getLong(model.getStructureId(), 0);
+            WorkflowDefinitionLink link = null;
+            
+            long folderId = JournalFolderLocalServiceUtil.getInheritedWorkflowFolderId(article.getFolderId());
 
-            WorkflowDefinitionLink link = WorkflowDefinitionLinkLocalServiceUtil.getWorkflowDefinitionLink(companyId, groupId,
-                    getClassName(), structureId, 0);
+    		DDMStructure ddmStructure = article.getDDMStructure();
 
+    		if(ddmStructure != null) {
+    			link = WorkflowDefinitionLinkLocalServiceUtil.fetchWorkflowDefinitionLink(
+    				companyId, groupId, JournalFolder.class.getName(), folderId,
+    				ddmStructure.getStructureId(), true);
+    		}
+    		
+    		if (link == null) {
+    			link = WorkflowDefinitionLinkLocalServiceUtil.fetchWorkflowDefinitionLink(
+    						companyId, groupId, JournalFolder.class.getName(),
+    						folderId, JournalArticleConstants.DDM_STRUCTURE_ID_ALL,
+    						true);
+    		}
+            
+            if(link == null) {
+                long structureId = GetterUtil.getLong(article.getStructureId(), 0);
+            	link = WorkflowDefinitionLinkLocalServiceUtil.getWorkflowDefinitionLink(companyId, groupId, getClassName(), structureId, 0);
+            }
+            
             return link;
         } catch (NoSuchWorkflowDefinitionLinkException e) {
             if (_log.isDebugEnabled()) {

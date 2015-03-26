@@ -80,12 +80,12 @@ PortletURL portletURL = PortletURLUtil.getCurrent(renderRequest, renderResponse)
 					<liferay-ui:search-container-column-text name="Structure"> 
 						<% if(structure != null) {
 						%><c:out value="<%=structure.getName(locale, true) %>"/><% if(structure.getGroupId() != groupId) {%> (Global)<% } %><% } else { 
-						%><%=LanguageUtil.get(pageContext, "basic-web-content") %><% } %>								
+						%><%=LanguageUtil.get(locale, "basic-web-content", "Basic Web Content") %><% } %>								
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text name="Workflow" >
 						<% if(structure != null && structureId == 0) { %>
-							Uses the workflow assigned to "<%=LanguageUtil.get(pageContext, "basic-web-content") %>"
+							Uses the workflow assigned to "<%=LanguageUtil.get(locale, "basic-web-content", "Basic Web Content") %>"
 						<% } else { %>
 					<aui:select label="" name='<%= "workflowDefinitionName@" + structureId %>' inlineField="true">
 
@@ -102,10 +102,10 @@ PortletURL portletURL = PortletURLUtil.getCurrent(renderRequest, renderResponse)
 
 					try {
 						WorkflowDefinitionLink defaultWorkflowDefinitionLink = WorkflowDefinitionLinkLocalServiceUtil.getDefaultWorkflowDefinitionLink(companyId, JournalArticle.class.getName(), structureId, 0);
-						defaultOptionMessage = LanguageUtil.get(pageContext, "default") + StringPool.COLON + StringPool.SPACE + defaultWorkflowDefinitionLink.getWorkflowDefinitionName();
+						defaultOptionMessage = LanguageUtil.get(locale, "default", "Default") + StringPool.COLON + StringPool.SPACE + defaultWorkflowDefinitionLink.getWorkflowDefinitionName();
 					}
 					catch (NoSuchWorkflowDefinitionLinkException nswdle) {
-						defaultOptionMessage = LanguageUtil.get(pageContext, "default") + StringPool.COLON + StringPool.SPACE + LanguageUtil.get(pageContext, "no-workflow");
+						defaultOptionMessage = LanguageUtil.get(locale, "default", "Default") + StringPool.COLON + StringPool.SPACE + LanguageUtil.get(locale, "no-workflow", "No Workflow");
 					}
 					%>
 

@@ -11,10 +11,21 @@ This portlet to allow assignment of different Liferay workflows to individual We
 * Liferay Portal 6.1 EE GA2, GA3 (6.1.20+)
 * Liferay Portal 6.2 CE GA1 (6.2.0+)
 * Liferay Portal 6.2 EE GA1 (6.2.10+)
+* Liferay Portal 7.0 M4 (7.0.0+)
 
 Branch 6.1.x holds plugin code for Liferay Portal 6.1 versions.
 Branch 6.2.x holds plugin code for Liferay Portal 6.2 versions.
-Master is sync'ed with branch 6.2.x
+Branch 7.0.x holds plugin code for Liferay Portal 7.0 versions.
+Master is sync'ed with branch 7.0.x
+
+
+### Liferay 7.0
+
+Liferay 7.0 now allows workflow by structure configuration via folders. While users can only set a default workflow in the root/home folder, users can now set either a single workflow, or a workflow by structure configuration per folder.
+
+* If you are starting a new instance of Liferay 7.0, we recommend that you use Liferay's out of the box folder-based workflow by structure configuration
+* If you are migrating from Liferay 6.0, you can continue to use this plugin (especially since all your web content is in the root/home folder). The plugin will defer to Liferay's configuration first, and only take effect if Liferay's configuration did not result in a workflow defined. This allows you to migrate from this plugin to Liferay 7.0's configuration.
+
 
 ## Downloads
 
