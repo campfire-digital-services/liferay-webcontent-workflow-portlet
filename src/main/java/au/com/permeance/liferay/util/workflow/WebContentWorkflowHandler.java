@@ -14,6 +14,10 @@
  */
 package au.com.permeance.liferay.util.workflow;
 
+import java.io.Serializable;
+import java.util.Locale;
+import java.util.Map;
+
 import com.liferay.portal.NoSuchWorkflowDefinitionLinkException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -30,11 +34,9 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.model.JournalStructure;
 import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
-
-import java.io.Serializable;
-import java.util.Locale;
-import java.util.Map;
+import com.liferay.portlet.journal.service.JournalStructureLocalServiceUtil;
 
 /**
  * Workflow Handler which is similar to JournalArticleWorkflowHandler, except it is not editable in
@@ -108,6 +110,10 @@ public class WebContentWorkflowHandler extends BaseWorkflowHandler {
 
             long structureId = GetterUtil.getLong(model.getStructureId(), 0);
 
+            if(WCWFUtil.isUseDDMStructureId()) {
+            	structureId = WCWFUtil.getDDMStructureId(model);
+            }
+            
             WorkflowDefinitionLink link = WorkflowDefinitionLinkLocalServiceUtil.getWorkflowDefinitionLink(companyId, groupId,
                     getClassName(), structureId, 0);
 

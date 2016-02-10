@@ -12,6 +12,7 @@ General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If
 not, see <http://www.gnu.org/licenses/>.
 --%>
+<%@page import="au.com.permeance.liferay.util.workflow.WCWFUtil"%>
 <%@page import="com.liferay.portlet.dynamicdatamapping.model.DDMStructure"%>
 <%@page import="au.com.permeance.liferay.portlets.workflow.JournalStructureBrowseEntry"%>
 <%@page import="java.util.Locale"%>
@@ -74,6 +75,9 @@ PortletURL portletURL = PortletURLUtil.getCurrent(renderRequest, renderResponse)
 					<%
 						DDMStructure structure = structureEntry.getStructure();
 						long structureId = 0;
+						if(WCWFUtil.isUseDDMStructureId()) {
+							if(structure != null) structureId = structure.getStructureId();	
+						} else 
 				    	if(structure != null) structureId = GetterUtil.getLong(structure.getStructureKey());
 					%>
 					
